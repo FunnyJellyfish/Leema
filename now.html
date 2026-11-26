@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leema Now Robot Vacuum</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%23ff3d8b%22/><circle cx=%2250%22 cy=%2256%22 r=%2216%22 fill=%22white%22/><circle cx=%2254%22 cy=%2258%22 r=%228%22 fill=%22%232a1450%22/></svg>">
+<meta name="description" content="The Leema Now: the robot vacuum so fast it cleans your house NOW. It even flies up the stairs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff6d6;
+    --ink: #2a1450;
+    --pink: #ff3d8b;
+    --yellow: #ffd23f;
+    --cyan: #2ee6d6;
+    --purple: #7b3cff;
+    --orange: #ff8a1f;
+    --card: #ffffff;
+    --muted: #5c4a80;
+    --shadow: #2a1450;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  main { overflow-x: clip; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image: radial-gradient(#ffd23f55 2px, transparent 2.5px);
+    background-size: 28px 28px;
+    color: var(--ink);
+    font-family: "Fredoka", system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .bungee { font-family: "Bungee", "Fredoka", sans-serif; font-weight: 400; line-height: 1.05; }
+  a { color: inherit; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- top bar ---------- */
+  .ticker {
+    background: var(--ink); color: var(--yellow);
+    font-family: "Bungee", sans-serif; font-size: 14px;
+    white-space: nowrap; overflow: hidden; padding: 6px 0;
+  }
+  .ticker span { display: inline-block; padding-left: 100%; animation: tick 22s linear infinite; }
+  @keyframes tick { to { transform: translateX(-100%); } }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; gap: 12px; flex-wrap: wrap;
+  }
+  .logo {
+    font-family: "Bungee", sans-serif; font-size: 34px; text-decoration: none;
+    color: var(--pink); text-shadow: 3px 3px 0 var(--ink);
+    transform: rotate(-3deg); display: inline-block;
+  }
+  .logo:hover { animation: wobble .5s ease-in-out; }
+  @keyframes wobble { 0%,100%{transform:rotate(-3deg)} 25%{transform:rotate(6deg) scale(1.08)} 75%{transform:rotate(-8deg)} }
+  nav ul { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav ul a {
+    text-decoration: none; font-weight: 600; padding: 6px 14px; border-radius: 999px;
+    border: 3px solid var(--ink); background: var(--card); box-shadow: 3px 3px 0 var(--shadow);
+    display: inline-block; transition: transform .1s;
+  }
+  nav ul a:hover { transform: translate(-2px,-2px) rotate(-2deg); background: var(--yellow); }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-block; font-family: "Bungee", sans-serif; font-size: 20px;
+    padding: 14px 26px; border-radius: 18px; border: 4px solid var(--ink);
+    background: var(--pink); color: #fff; text-decoration: none; cursor: pointer;
+    box-shadow: 6px 6px 0 var(--shadow); transition: transform .1s, box-shadow .1s;
+  }
+  .btn:hover { transform: translate(-3px,-3px) rotate(-1.5deg); box-shadow: 9px 9px 0 var(--shadow); }
+  .btn:active { transform: translate(4px,4px); box-shadow: 2px 2px 0 var(--shadow); }
+  .btn.alt { background: var(--cyan); color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: center;
+    padding: 28px 16px 56px;
+  }
+  .sticker {
+    display: inline-block; background: var(--yellow); border: 3px solid var(--ink);
+    padding: 4px 14px; border-radius: 999px; font-weight: 700; transform: rotate(-4deg);
+    box-shadow: 3px 3px 0 var(--shadow); margin-bottom: 14px;
+  }
+  .hero h1 { font-size: clamp(44px, 7.5vw, 92px); margin: 0 0 14px; color: var(--purple); text-shadow: 4px 4px 0 var(--yellow), 7px 7px 0 var(--ink); }
+  .hero h1 .now { color: var(--pink); display: inline-block; animation: jitter .18s steps(2) infinite; }
+  @keyframes jitter { 0%{transform:translate(0,0) rotate(-2deg)} 50%{transform:translate(2px,-1px) rotate(2deg)} }
+  .hero p.lead { font-size: 22px; margin: 0 0 24px; max-width: 34ch; }
+  .hero .ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .tiny { font-size: 12px; color: var(--muted); margin-top: 14px; }
+
+  .hero-art { position: relative; aspect-ratio: 1; max-width: 460px; width: 100%; justify-self: center; }
+  .burst {
+    position: absolute; inset: 0; background: var(--yellow);
+    clip-path: polygon(50% 0%,61% 18%,79% 7%,78% 28%,98% 26%,86% 43%,100% 57%,81% 64%,90% 84%,69% 81%,62% 100%,50% 86%,37% 100%,31% 80%,10% 85%,19% 64%,0% 56%,14% 43%,2% 26%,22% 28%,20% 7%,39% 18%);
+    animation: spin 18s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hero-bot { position: absolute; inset: 12%; animation: zoomy 1.6s ease-in-out infinite; }
+  @keyframes zoomy {
+    0%,100% { transform: translateX(0) rotate(0deg); }
+    40% { transform: translateX(-6%) rotate(-6deg); }
+    55% { transform: translateX(8%) rotate(5deg); }
+  }
+  .hero-bot .pupil { animation: look 1.6s ease-in-out infinite; }
+  @keyframes look { 0%,100%{transform:translate(0,0)} 40%{transform:translate(-4px,2px)} 55%{transform:translate(5px,-2px)} }
+  .speed { position: absolute; left: -6%; top: 35%; width: 30%; }
+  .speed i { display: block; height: 8px; border-radius: 8px; background: var(--ink); margin: 14px 0; animation: whoosh .5s linear infinite; }
+  .speed i:nth-child(2){ width: 70%; margin-left: 20%; animation-delay: .15s; }
+  .speed i:nth-child(3){ width: 85%; animation-delay: .3s; }
+  @keyframes whoosh { 0%{opacity:0; transform:translateX(30px)} 30%{opacity:1} 100%{opacity:0; transform:translateX(-40px)} }
+  .price-tag {
+    position: absolute; right: 0; bottom: 6%; background: var(--pink); color: #fff;
+    font-family: "Bungee", sans-serif; padding: 10px 16px; border: 4px solid var(--ink);
+    border-radius: 16px; transform: rotate(8deg); box-shadow: 5px 5px 0 var(--shadow); font-size: 22px; text-align: center; line-height: 1.1;
+  }
+  .price-tag small { display: block; font-family: "Fredoka", sans-serif; font-size: 13px; }
+
+  /* ---------- sections ---------- */
+  section { padding: 56px 0; }
+  .sec-title { font-size: clamp(32px, 5vw, 56px); margin: 0 0 10px; color: var(--ink); }
+  .sec-title .hl { color: var(--pink); }
+  .sec-sub { font-size: 20px; color: var(--muted); margin: 0 0 28px; max-width: 46ch; }
+
+  /* stairs demo */
+  .stairs-box {
+    background: var(--card); border: 5px solid var(--ink); border-radius: 28px;
+    box-shadow: 10px 10px 0 var(--shadow); overflow: hidden;
+  }
+  #stairs { display: block; width: 100%; height: auto; aspect-ratio: 900 / 480; background: #bdf3ff; }
+  .steps-legend {
+    display: grid; grid-template-columns: repeat(3, 1fr); border-top: 5px solid var(--ink);
+  }
+  .steps-legend div {
+    padding: 14px 12px; text-align: center; font-family: "Bungee", sans-serif; font-size: 18px;
+    transition: background .12s, transform .12s; border-right: 5px solid var(--ink);
+  }
+  .steps-legend div:last-child { border-right: 0; }
+  .steps-legend div small { display: block; font-family: "Fredoka", sans-serif; font-size: 14px; color: var(--muted); }
+  .steps-legend div.on { background: var(--yellow); }
+  .steps-legend div.on:nth-child(1) { background: var(--cyan); }
+  .steps-legend div.on:nth-child(2) { background: var(--pink); color: #fff; }
+  .steps-legend div.on:nth-child(2) small { color: #fff; }
+  .disclaimer { font-size: 13px; color: var(--muted); margin-top: 18px; }
+
+  /* features */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .feat {
+    background: var(--card); border: 4px solid var(--ink); border-radius: 22px; padding: 22px;
+    box-shadow: 7px 7px 0 var(--shadow); transition: transform .15s;
+  }
+  .feat:nth-child(odd) { transform: rotate(-1.2deg); }
+  .feat:nth-child(even) { transform: rotate(1.2deg); }
+  .feat:hover { transform: rotate(0) scale(1.04); }
+  .feat .ico {
+    width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--ink);
+    display: grid; place-items: center; font-size: 32px; margin-bottom: 12px;
+  }
+  .feat h3 { font-size: 22px; margin: 0 0 8px; }
+  .feat p { margin: 0; }
+
+  /* specs */
+  .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  table {
+    width: 100%; border-collapse: separate; border-spacing: 0; background: var(--card);
+    border: 4px solid var(--ink); border-radius: 20px; overflow: hidden; box-shadow: 7px 7px 0 var(--shadow);
+  }
+  td { padding: 12px 16px; border-bottom: 3px dashed #2a145033; vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 700; width: 42%; }
+  tr:nth-child(odd) td { background: #fff3fa; }
+  .meter { background: var(--card); border: 4px solid var(--ink); border-radius: 20px; padding: 22px; box-shadow: 7px 7px 0 var(--shadow); }
+  .meter h3 { margin: 0 0 16px; font-size: 22px; }
+  .bar { margin-bottom: 14px; }
+  .bar label { font-weight: 600; display: flex; justify-content: space-between; gap: 8px; }
+  .bar .track { height: 22px; border: 3px solid var(--ink); border-radius: 999px; background: #eee; overflow: hidden; margin-top: 4px; }
+  .bar .fill { height: 100%; border-radius: 999px; }
+  .meter { overflow: hidden; }
+  .bar.over .track { overflow: visible; }
+  .bar.over .fill { width: 140% !important; animation: overflow 1s ease-in-out infinite alternate; }
+  @keyframes overflow { to { width: 160% !important; } }
+
+  /* reviews */
+  .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .review {
+    background: var(--card); border: 4px solid var(--ink); border-radius: 22px 22px 22px 4px;
+    padding: 20px; box-shadow: 6px 6px 0 var(--shadow); position: relative;
+  }
+  .review .stars { color: var(--orange); font-size: 22px; letter-spacing: 2px; }
+  .review p { margin: 8px 0 12px; }
+  .review .who { font-weight: 700; color: var(--purple); }
+
+  /* buy */
+  .buy {
+    text-align: center; background: var(--purple); color: #fff; border: 5px solid var(--ink);
+    border-radius: 32px; padding: 44px 20px; box-shadow: 10px 10px 0 var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .buy h2 { font-size: clamp(34px, 6vw, 64px); margin: 0 0 8px; color: var(--yellow); text-shadow: 4px 4px 0 var(--ink); }
+  .buy p { font-size: 20px; margin: 0 auto 24px; max-width: 40ch; }
+  .buy .big-price { font-family: "Bungee", sans-serif; font-size: clamp(48px, 9vw, 96px); color: #fff; text-shadow: 5px 5px 0 var(--pink); margin: 6px 0 4px; }
+  .buy .was { text-decoration: line-through; opacity: .75; }
+  #buyMsg { min-height: 1.6em; margin-top: 18px; font-weight: 700; color: var(--yellow); font-size: 20px; }
+
+  footer { padding: 40px 0 60px; text-align: center; color: var(--muted); font-size: 14px; }
+  footer .logo { font-size: 24px; }
+
+  /* the zoom-across vacuum for the buy button */
+  #zoomer { position: fixed; top: 50%; left: -200px; width: 140px; pointer-events: none; z-index: 50; display: none; }
+
+  @media (max-width: 820px) {
+    .hero { grid-template-columns: 1fr; padding-top: 10px; }
+    .hero-art { max-width: 340px; }
+    .features, .reviews { grid-template-columns: 1fr; }
+    .specs { grid-template-columns: 1fr; }
+    .steps-legend div { font-size: 14px; padding: 10px 6px; }
+    .steps-legend div small { font-size: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker"><span>★ BREAKING: LEEMA NOW CLEANS ENTIRE HOUSE IN 4 SECONDS ★ STAIRS ARE NO LONGER A PROBLEM (THEY ARE A RAMP NOW) ★ CAT REPORTS "DEEPLY CONCERNED" ★ PLEASE STOP ASKING IF IT CAN FLY. IT CAN FLY. ★</span></div>
+
+<header class="wrap">
+  <nav>
+    <a class="logo" href="index.html">leema!</a>
+    <ul>
+      <li><a href="index.html">← Home</a></li>
+      <li><a href="#stairs-demo">Stairs?!</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#specs">Specs</a></li>
+      <li><a href="#buy">Buy NOW</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div>
+      <div class="sticker">✨ brand new ✨ extremely fast ✨</div>
+      <h1>The <span class="now">NOW</span> Robot Vacuum</h1>
+      <p class="lead">It doesn't clean your house later. It doesn't clean your house soon. It cleans your house <b>NOW</b>. Possibly before you even bought it.</p>
+      <div class="ctas">
+        <a class="btn" href="#buy">Get it NOW</a>
+        <a class="btn alt" href="#stairs-demo">Watch it fly 🪽</a>
+      </div>
+      <div class="tiny">*Leema is not responsible for socks, small coins, or any homework that "the vacuum ate."</div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="burst"></div>
+      <div class="speed"><i></i><i></i><i></i></div>
+      <svg class="hero-bot" viewBox="0 0 200 200">
+        <!-- shadow -->
+        <ellipse cx="100" cy="176" rx="70" ry="10" fill="#2a1450" opacity=".25"/>
+        <!-- body -->
+        <circle cx="100" cy="100" r="78" fill="#2a1450"/>
+        <circle cx="100" cy="96" r="74" fill="#ff3d8b"/>
+        <circle cx="100" cy="96" r="58" fill="#ff6aa8"/>
+        <!-- bumper -->
+        <path d="M30 80 A74 74 0 0 1 170 80" fill="none" stroke="#2a1450" stroke-width="8" stroke-linecap="round"/>
+        <!-- lidar turret -->
+        <circle cx="100" cy="64" r="16" fill="#2a1450"/>
+        <circle cx="100" cy="64" r="9" fill="#2ee6d6"/>
+        <!-- googly eyes -->
+        <circle cx="72" cy="108" r="20" fill="#fff" stroke="#2a1450" stroke-width="5"/>
+        <circle cx="128" cy="108" r="20" fill="#fff" stroke="#2a1450" stroke-width="5"/>
+        <circle class="pupil" cx="76" cy="112" r="9" fill="#2a1450"/>
+        <circle class="pupil" cx="132" cy="112" r="9" fill="#2a1450"/>
+        <!-- grin -->
+        <path d="M78 140 Q100 158 122 140" fill="none" stroke="#2a1450" stroke-width="6" stroke-linecap="round"/>
+        <!-- logo -->
+        <text x="100" y="40" text-anchor="middle" font-family="Bungee, sans-serif" font-size="14" fill="#fff">NOW</text>
+      </svg>
+      <div class="price-tag">$299<small>(it's worth like $300)</small></div>
+    </div>
+  </div>
+
+  <!-- STAIRS -->
+  <section id="stairs-demo">
+    <div class="wrap">
+      <h2 class="sec-title">How does it do <span class="hl">stairs?</span></h2>
+      <p class="sec-sub">Other robot vacuums are scared of stairs. The Leema Now uses our patented three-step <b>Zoom-Stop-Fly™</b> technology. Our engineers call it "physics." Our lawyers call it "please stop."</p>
+      <div class="stairs-box">
+        <canvas id="stairs" width="900" height="480" aria-label="Animation: the Leema Now robot vacuum drives really fast toward each stair, stops suddenly, and flies up onto the next step."></canvas>
+        <div class="steps-legend" id="legend">
+          <div data-p="zoom">1. Go really fast<small>like, REALLY fast</small></div>
+          <div data-p="stop">2. Stop<small>all at once</small></div>
+          <div data-p="fly">3. Fly<small>wheee!</small></div>
+        </div>
+      </div>
+      <p class="disclaimer">Do not try Zoom-Stop-Fly™ yourself. You are not a robot vacuum. (If you are a robot vacuum, hi! Welcome!)</p>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <h2 class="sec-title">Features that <span class="hl">go fast</span></h2>
+      <p class="sec-sub">Every single thing about it is fast. Even the features list. Read quickly.</p>
+      <div class="features">
+        <div class="feat"><div class="ico" style="background:var(--cyan)">⚡</div><h3>Ludicrous Speed</h3><p>Top speed of 0.8 Mach (indoors). Your floors get cleaned so fast the dust doesn't even know it happened.</p></div>
+        <div class="feat"><div class="ico" style="background:var(--yellow)">🪽</div><h3>Stair Flight</h3><p>Zooms, stops, and flies up every stair in your house. Lands perfectly almost every time. We're like 90% sure.</p></div>
+        <div class="feat"><div class="ico" style="background:var(--pink)">👀</div><h3>Googly Eyes</h3><p>Real googly eyes for real navigation. Do they help? No. Do they look amazing? Absolutely yes.</p></div>
+        <div class="feat"><div class="ico" style="background:#c9f27a">🧦</div><h3>Sock Detector</h3><p>Detects socks instantly and then eats them anyway. But now it <i>knows</i>, and that's growth.</p></div>
+        <div class="feat"><div class="ico" style="background:var(--orange)">📢</div><h3>Says "VROOM"</h3><p>Out loud. Every time it starts. You cannot turn this off. You will not want to turn this off.</p></div>
+        <div class="feat"><div class="ico" style="background:#d8c4ff">🐈</div><h3>Cat Mode</h3><p>Cat rides on top at no extra charge. Cat is not included. Cat has not agreed to this.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <section id="specs">
+    <div class="wrap">
+      <h2 class="sec-title">Spec<span class="hl">s</span> (very real)</h2>
+      <p class="sec-sub">We measured all of these with a ruler and a stopwatch. Mostly the stopwatch.</p>
+      <div class="specs">
+        <table>
+          <tr><td>Model</td><td>Leema Now (NOW-1)</td></tr>
+          <tr><td>Top speed</td><td>Too fast (est. 47 mph)</td></tr>
+          <tr><td>Stopping distance</td><td>0 inches. It just stops.</td></tr>
+          <tr><td>Max flight height</td><td>1 stair. 2 stairs if it's feeling confident.</td></tr>
+          <tr><td>Battery</td><td>4 hours, or 9,000 rooms</td></tr>
+          <tr><td>Dustbin size</td><td>One (1) whole cup</td></tr>
+          <tr><td>Weight</td><td>Light enough to fly, heavy enough to land</td></tr>
+          <tr><td>Colors</td><td>Hot Pink, Hotter Pink</td></tr>
+          <tr><td>Sound</td><td>"VROOM", "SCREEEECH", "WHEEE", "boing"</td></tr>
+        </table>
+        <div class="meter">
+          <h3>Now vs. a normal vacuum</h3>
+          <div class="bar"><label>Speed <span>Now 🚀</span></label><div class="track"><div class="fill" style="width:100%;background:var(--pink)"></div></div></div>
+          <div class="bar"><label>Speed <span>Normal 🐢</span></label><div class="track"><div class="fill" style="width:12%;background:#aaa"></div></div></div>
+          <div class="bar"><label>Stairs climbed <span>Now</span></label><div class="track"><div class="fill" style="width:100%;background:var(--cyan)"></div></div></div>
+          <div class="bar"><label>Stairs climbed <span>Normal</span></label><div class="track"><div class="fill" style="width:0%;background:#aaa"></div></div></div>
+          <div class="bar over"><label>Fun <span>Now</span></label><div class="track"><div class="fill" style="width:140%;background:var(--yellow)"></div></div></div>
+          <div class="bar"><label>Fun <span>Normal</span></label><div class="track"><div class="fill" style="width:8%;background:#aaa"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="wrap">
+      <h2 class="sec-title">People <span class="hl">love</span> it</h2>
+      <p class="sec-sub">Real reviews from real people (and one cat).</p>
+      <div class="reviews">
+        <div class="review"><div class="stars">★★★★★</div><p>"I turned it on and blinked. When I opened my eyes, my whole house was clean and the vacuum was on the roof."</p><div class="who">— Dana, upstairs now</div></div>
+        <div class="review"><div class="stars">★★★★★</div><p>"Watched it fly up our stairs. Then watched it fly up them again. I've done nothing else for three days."</p><div class="who">— Marcus, unemployed now</div></div>
+        <div class="review"><div class="stars">★☆☆☆☆</div><p>"Mrrrow. Hsss. MROW."</p><div class="who">— Whiskers, cat</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUY -->
+  <section id="buy">
+    <div class="wrap">
+      <div class="buy">
+        <h2>Buy it NOW</h2>
+        <p>Because "later" isn't in our vocabulary. Neither is "slow down" or "please land somewhere else."</p>
+        <div class="big-price">$299</div>
+        <p><span class="was">$300</span> &nbsp;You save a whole dollar!</p>
+        <button class="btn" id="buyBtn" type="button">Add to cart NOW</button>
+        <div id="buyMsg" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <a class="logo" href="index.html">leema!</a>
+  <p>© 2026 Leema · leema.oddly-inc.com · Proudly part of the Oddly neighborhood.<br>
+  The Leema Now is a cartoon vacuum on a website. It cannot actually fly. Probably.</p>
+</footer>
+
+<!-- vacuum that zooms across the screen when you click buy -->
+<svg id="zoomer" viewBox="0 0 200 120" aria-hidden="true">
+  <rect x="10" y="38" width="180" height="50" rx="25" fill="#2a1450"/>
+  <rect x="14" y="34" width="172" height="44" rx="22" fill="#ff3d8b"/>
+  <rect x="80" y="20" width="44" height="18" rx="7" fill="#2a1450"/>
+  <circle cx="150" cy="56" r="13" fill="#fff" stroke="#2a1450" stroke-width="4"/>
+  <circle cx="156" cy="58" r="6" fill="#2a1450"/>
+  <circle cx="55" cy="92" r="14" fill="#2a1450"/><circle cx="145" cy="92" r="14" fill="#2a1450"/>
+</svg>
+
+<script>
+/* =========================================================
+   Buy button: a vacuum zooms across the screen
+   ========================================================= */
+(function () {
+  const btn = document.getElementById('buyBtn');
+  const msg = document.getElementById('buyMsg');
+  const z = document.getElementById('zoomer');
+  const lines = [
+    "Added! It's already on its way. Actually, it's already there. Check your living room.",
+    "Added another one! You now own a small fleet.",
+    "Three?! Okay, they're forming a band.",
+    "They have started building a nest. We're scared."
+  ];
+  let n = 0, running = false;
+  btn.addEventListener('click', () => {
+    msg.textContent = lines[Math.min(n, lines.length - 1)];
+    n++;
+    if (running) return;
+    running = true;
+    z.style.display = 'block';
+    z.style.top = (window.innerHeight * (0.3 + Math.random() * 0.4)) + 'px';
+    const start = performance.now(), dur = 700;
+    const W = window.innerWidth + 400;
+    function step(t) {
+      const k = Math.min(1, (t - start) / dur);
+      const e = k * k; // speed up as it goes
+      z.style.left = (-200 + W * e) + 'px';
+      z.style.transform = 'rotate(' + (-4 + Math.sin(k * 30) * 3) + 'deg)';
+      if (k < 1) requestAnimationFrame(step);
+      else { z.style.display = 'none'; running = false; }
+    }
+    requestAnimationFrame(step);
+  });
+})();
+
+/* =========================================================
+   Stairs animation: Zoom -> Stop -> Fly
+   ========================================================= */
+(function () {
+  const cv = document.getElementById('stairs');
+  const ctx = cv.getContext('2d');
+  const VW = 900, VH = 480;           // logical view size
+  const legend = document.querySelectorAll('#legend div');
+
+  // ---- world ----
+  const TREAD = 270;                  // width of each step
+  const RISE = 72;                    // height of each step
+  const STEPS = 5;                    // number of stairs to climb
+  const FLOOR_Y = 0;                  // world y of the ground floor surface (y grows downward)
+  const BOT_W = 78, BOT_H = 20;
+  const G = 2600;                     // gravity, px/s^2
+  const APEX = 46;                    // how far above the next step it flies
+
+  function stepTop(i) { return FLOOR_Y - i * RISE; }
+  function stepLeft(i) { return i === 0 ? -700 : i * TREAD; }
+  function stepRight(i) { return i === STEPS ? STEPS * TREAD + 700 : (i + 1) * TREAD; }
+
+  // crumbs to clean
+  let crumbs = [];
+  function makeCrumbs() {
+    crumbs = [];
+    let seed = 7;
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    for (let i = 0; i <= STEPS; i++) {
+      // only where the robot actually drives, so it can clean every crumb
+      const L = i === 0 ? -340 : landX(i - 1) + 4, R = i === STEPS ? landX(STEPS - 1) + BOT_W - 4 : stopX(i) + BOT_W - 4;
+      const count = i === 0 ? 10 : 7;
+      for (let k = 0; k < count; k++) {
+        crumbs.push({ step: i, x: L + rnd() * (R - L), r: 2 + rnd() * 3, hue: rnd() < 0.5 ? '#8a6a3a' : '#b08a55', gone: false, t: 0 });
+      }
+    }
+  }
+
+  // ---- robot state ----
+  const bot = { x: 0, y: 0, vx: 0, vy: 0, rot: 0, squash: 0, wheel: 0, step: 0, eyeLag: 0 };
+  let phase, pt, fly, hopsDone, endT;
+  let parts = [];   // dust puffs + speed lines
+  let words = [];   // pop-up comic text
+  let cam = { x: 0, y: 0 };
+  let fade = 1;     // 1 = fully visible
+
+  function reset() {
+    makeCrumbs();
+    bot.step = 0; bot.x = -360; bot.y = stepTop(0); bot.vx = 0; bot.vy = 0; bot.rot = 0; bot.squash = 0;
+    phase = 'rev'; pt = 0; hopsDone = 0; endT = 0;
+    parts = []; words = [];
+    cam.x = bot.x + 200; cam.y = bot.y - 60;
+  }
+
+  // where the robot stops before the riser of its current step
+  function stopX(i) { return stepRight(i) - BOT_W - 34; }
+  function landX(i) { return stepLeft(i + 1) + 22; }
+  function zoomStartX() { return bot.x; }
+
+  let zoomFrom = 0, zoomDur = 0;
+  function pop(text, x, y, color, size) {
+    words.push({ text, x, y, color, size: size || 28, t: 0, life: (size || 28) > 40 ? 2.2 : 0.75, rot: (Math.random() - 0.5) * 0.4 });
+  }
+
+  function setPhase(p) {
+    phase = p; pt = 0;
+    if (p === 'rev') {
+      pop('vrrrm…', bot.x + BOT_W / 2, bot.y - 52, '#7b3cff', 22);
+    }
+    if (p === 'zoom') {
+      zoomFrom = zoomStartX();
+      const dist = stopX(bot.step) - zoomFrom;
+      zoomDur = Math.max(0.32, Math.min(0.6, dist / 520));
+      pop('VROOM!', bot.x + BOT_W / 2, bot.y - 56, '#ff3d8b', 30);
+    }
+    if (p === 'stop') {
+      bot.vx = 0;
+      pop('SCREEECH!', bot.x + BOT_W + 10, bot.y - 50, '#ff8a1f', 26);
+      for (let k = 0; k < 10; k++) {
+        parts.push({ kind: 'puff', x: bot.x + BOT_W * Math.random(), y: bot.y - 2, vx: -60 - Math.random() * 120, vy: -40 - Math.random() * 60, r: 5 + Math.random() * 7, life: 0.55, t: 0 });
+      }
+    }
+    if (p === 'fly') {
+      // compute a ballistic arc from here up onto the next step
+      const sx = bot.x, sy = bot.y;
+      const ey = stepTop(bot.step + 1), ex = landX(bot.step);
+      const apexY = ey - APEX;
+      const vy0 = -Math.sqrt(2 * G * (sy - apexY));
+      const ta = -vy0 / G;
+      const tb = Math.sqrt(2 * (ey - apexY) / G);
+      const T = ta + tb;
+      fly = { sx, sy, ex, ey, vy0, vx: (ex - sx) / T, T, flip: bot.step + 1 === STEPS };
+      pop('WHEEE!', bot.x + BOT_W / 2 + 40, bot.y - RISE - 70, '#2ee6d6', 30);
+    }
+    if (p === 'land') {
+      bot.squash = 1;
+      pop('boing', bot.x + BOT_W / 2, bot.y - 40, '#7b3cff', 20);
+      for (let k = 0; k < 12; k++) {
+        const dir = k % 2 ? 1 : -1;
+        parts.push({ kind: 'puff', x: bot.x + BOT_W / 2 + dir * (BOT_W / 2), y: bot.y - 2, vx: dir * (40 + Math.random() * 120), vy: -20 - Math.random() * 60, r: 4 + Math.random() * 6, life: 0.5, t: 0 });
+      }
+    }
+    if (p === 'party') {
+      pop('ALL CLEAN!', bot.x + BOT_W / 2, bot.y - 90, '#ff3d8b', 44);
+      for (let k = 0; k < 60; k++) {
+        const a = Math.random() * Math.PI * 2, s = 150 + Math.random() * 350;
+        parts.push({ kind: 'confetti', x: bot.x + BOT_W / 2, y: bot.y - 30, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 250, r: 4 + Math.random() * 4, life: 2.2, t: 0, c: ['#ff3d8b', '#ffd23f', '#2ee6d6', '#7b3cff', '#ff8a1f'][k % 5], spin: Math.random() * 10 });
+      }
+    }
+    // legend highlight
+    const map = { rev: 'zoom', zoom: 'zoom', stop: 'stop', fly: 'fly', land: 'fly' };
+    legend.forEach(d => d.classList.toggle('on', d.dataset.p === map[p]));
+  }
+
+  const easeInQuad = t => t * t;
+  const easeOutBack = t => { const c = 1.9; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+
+  function update(dt) {
+    pt += dt;
+    bot.squash = Math.max(0, bot.squash - dt * 4);
+    let speed = 0;
+
+    switch (phase) {
+      case 'rev': {
+        // engine revving: little shake, wheels spinning in place
+        bot.wheel += dt * 30;
+        bot.rot = Math.sin(pt * 70) * 0.025;
+        if (pt > 0.42) setPhase('zoom');
+        break;
+      }
+      case 'zoom': {
+        const k = Math.min(1, pt / zoomDur);
+        const prev = bot.x;
+        bot.x = zoomFrom + (stopX(bot.step) - zoomFrom) * easeInQuad(k);
+        speed = (bot.x - prev) / Math.max(dt, 1e-4);
+        bot.vx = speed;
+        bot.wheel += speed * dt / 7;
+        bot.rot = -0.07 * Math.min(1, k * 3);       // little wheelie from acceleration
+        if (Math.random() < 0.9) {
+          parts.push({ kind: 'line', x: bot.x - 8, y: bot.y - 4 - Math.random() * 22, len: 30 + Math.random() * 50, life: 0.22, t: 0 });
+        }
+        if (k >= 1) setPhase('stop');
+        break;
+      }
+      case 'stop': {
+        // the sudden stop: robot pitches forward, then launches
+        const k = Math.min(1, pt / 0.12);
+        bot.rot = -0.07 + 0.2 * Math.sin(k * Math.PI);  // nose dips forward
+        bot.squash = 0.6 * Math.sin(k * Math.PI);
+        if (pt > 0.12) setPhase('fly');
+        break;
+      }
+      case 'fly': {
+        const t = Math.min(pt, fly.T);
+        bot.x = fly.sx + fly.vx * t;
+        bot.y = fly.sy + fly.vy0 * t + 0.5 * G * t * t;
+        bot.wheel += dt * 40;
+        const k = t / fly.T;
+        bot.rot = fly.flip ? -k * Math.PI * 2 : -0.35 * Math.sin(k * Math.PI);
+        if (pt >= fly.T) {
+          bot.x = fly.ex; bot.y = fly.ey; bot.rot = 0; bot.step++;
+          hopsDone++;
+          setPhase('land');
+        }
+        break;
+      }
+      case 'land': {
+        bot.rot = Math.sin(pt * 26) * 0.05 * Math.max(0, 1 - pt * 3);
+        if (pt > 0.32) {
+          if (bot.step >= STEPS) setPhase('party');
+          else setPhase('rev');
+        }
+        break;
+      }
+      case 'party': {
+        // happy little victory spins in place
+        bot.rot = 0;
+        bot.y = stepTop(STEPS) - Math.abs(Math.sin(pt * 7)) * 22 * Math.max(0, 1 - pt / 1.8);
+        bot.wheel += dt * 20;
+        if (pt > 2.4) { fade = Math.max(0, 1 - (pt - 2.4) / 0.5); }
+        if (pt > 2.9) { reset(); setPhase('rev'); fadeIn = true; }
+        break;
+      }
+    }
+    if (fadeIn) { fade = Math.min(1, fade + dt * 2.5); if (fade >= 1) fadeIn = false; }
+
+    // eyes lag behind motion
+    const target = Math.max(-1, Math.min(1, -bot.vx / 900));
+    bot.eyeLag += (((phase === 'zoom') ? target : (phase === 'stop' ? 1 : (phase === 'fly' ? 0.6 : 0))) - bot.eyeLag) * Math.min(1, dt * 14);
+
+    // clean crumbs under the robot
+    const groundY = bot.y;
+    crumbs.forEach(c => {
+      if (!c.gone && c.step === bot.step && Math.abs(groundY - stepTop(c.step)) < 4 && c.x > bot.x - 2 && c.x < bot.x + BOT_W + 2) {
+        c.gone = true; c.t = 0;
+      }
+      if (c.gone) c.t += dt;
+    });
+
+    // particles
+    parts.forEach(p => {
+      p.t += dt;
+      if (p.kind === 'puff') { p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.92; p.vy *= 0.92; }
+      if (p.kind === 'confetti') { p.vy += 900 * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= 0.98; }
+    });
+    parts = parts.filter(p => p.t < p.life);
+    words.forEach(w => { w.t += dt; w.y -= dt * (w.life > 1 ? 8 : 30); });
+    words = words.filter(w => w.t < w.life);
+
+    // camera follows the robot smoothly
+    const tx = bot.x + BOT_W / 2 + 90;
+    const ty = Math.min(bot.y, stepTop(bot.step)) - 40;
+    const k = 1 - Math.pow(0.0025, dt);
+    cam.x += (tx - cam.x) * k;
+    cam.y += (ty - cam.y) * k;
+  }
+  let fadeIn = false;
+
+  // ---------- drawing ----------
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawBackground() {
+    // wall
+    ctx.fillStyle = '#bdf3ff';
+    ctx.fillRect(0, 0, VW, VH);
+    // wallpaper dots, with parallax
+    const ox = -(cam.x * 0.3) % 60, oy = -(cam.y * 0.3) % 60;
+    ctx.fillStyle = '#a3e9f7';
+    for (let x = ox - 60; x < VW + 60; x += 60) {
+      for (let y = oy - 60; y < VH + 60; y += 60) {
+        ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x + 30, y + 30, 5, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+  }
+
+  function drawWorldDecor() {
+    // a goofy framed picture of the vacuum on the wall, and a window
+    ctx.save();
+    ctx.translate(-260, -250);
+    ctx.fillStyle = '#2a1450'; roundRect(-6, -6, 132, 102, 10); ctx.fill();
+    ctx.fillStyle = '#ffd23f'; roundRect(0, 0, 120, 90, 6); ctx.fill();
+    ctx.fillStyle = '#ff3d8b'; roundRect(25, 40, 70, 24, 12); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(80, 50, 6, 0, 7); ctx.fill();
+    ctx.fillStyle = '#2a1450'; ctx.beginPath(); ctx.arc(82, 51, 3, 0, 7); ctx.fill();
+    ctx.font = '12px Bungee, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('MY HERO', 60, 22);
+    ctx.restore();
+
+    // window halfway up
+    ctx.save();
+    ctx.translate(780, -360);
+    ctx.fillStyle = '#2a1450'; roundRect(-6, -6, 152, 122, 12); ctx.fill();
+    ctx.fillStyle = '#ffe9a8'; roundRect(0, 0, 140, 110, 8); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(40, 40, 14, 0, 7); ctx.arc(58, 36, 18, 0, 7); ctx.arc(78, 42, 13, 0, 7); ctx.fill();
+    ctx.fillStyle = '#ffd23f'; ctx.beginPath(); ctx.arc(110, 26, 12, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#2a1450'; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(70, 0); ctx.lineTo(70, 110); ctx.moveTo(0, 55); ctx.lineTo(140, 55); ctx.stroke();
+    ctx.restore();
+
+    // "upstairs" sign at the top
+    ctx.save();
+    ctx.translate(STEPS * TREAD + 120, stepTop(STEPS) - 210);
+    ctx.fillStyle = '#2a1450'; ctx.fillRect(56, 60, 8, 90);
+    ctx.fillStyle = '#2a1450'; roundRect(-6, -6, 132, 72, 12); ctx.fill();
+    ctx.fillStyle = '#ff3d8b'; roundRect(0, 0, 120, 60, 9); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = '16px Bungee, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('UPSTAIRS', 60, 26); ctx.font = '12px Fredoka, sans-serif'; ctx.fillText('(we made it)', 60, 46);
+    ctx.restore();
+  }
+
+  function drawStairs() {
+    for (let i = 0; i <= STEPS; i++) {
+      const L = stepLeft(i), R = stepRight(i), T = stepTop(i);
+      const bottom = FLOOR_Y + 400;
+      // block body
+      ctx.fillStyle = i % 2 ? '#ffb86b' : '#ffc685';
+      ctx.fillRect(L, T, R - L, bottom - T);
+      // carpet on top
+      ctx.fillStyle = i === 0 || i === STEPS ? '#7b3cff' : '#ff3d8b';
+      ctx.fillRect(L, T, R - L, 12);
+      // wood grain lines
+      ctx.strokeStyle = '#e8964a'; ctx.lineWidth = 3;
+      for (let gy = T + 30; gy < T + RISE; gy += 20) {
+        ctx.beginPath(); ctx.moveTo(L + 20, gy); ctx.lineTo(R - 40, gy); ctx.stroke();
+      }
+      // outline
+      ctx.strokeStyle = '#2a1450'; ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.moveTo(L, T); ctx.lineTo(R, T);
+      if (i < STEPS) ctx.lineTo(R, T - RISE + RISE); // riser handled by next step
+      ctx.stroke();
+      if (i > 0) { ctx.beginPath(); ctx.moveTo(L, T); ctx.lineTo(L, T + RISE); ctx.stroke(); }
+    }
+  }
+
+  function drawCrumbs() {
+    crumbs.forEach(c => {
+      const y = stepTop(c.step) - c.r;
+      if (c.gone) {
+        // sucked up: shrink and fly toward the bot
+        if (c.t > 0.25) return;
+        const k = c.t / 0.25;
+        ctx.globalAlpha = 1 - k;
+        ctx.fillStyle = c.hue;
+        ctx.beginPath(); ctx.arc(c.x, y - k * 10, c.r * (1 - k), 0, 7); ctx.fill();
+        ctx.globalAlpha = 1;
+        return;
+      }
+      ctx.fillStyle = c.hue;
+      ctx.beginPath(); ctx.arc(c.x, y, c.r, 0, 7); ctx.fill();
+    });
+  }
+
+  function drawBot() {
+    const cx = bot.x + BOT_W / 2, by = bot.y;
+    const sq = bot.squash;
+    ctx.save();
+    // shadow on the surface below
+    const surf = phase === 'fly' ? (bot.x + BOT_W / 2 > stepLeft(bot.step + 1) ? stepTop(bot.step + 1) : stepTop(bot.step)) : by;
+    const hgt = Math.max(0, surf - by);
+    ctx.fillStyle = 'rgba(42,20,80,' + (0.25 * Math.max(0.2, 1 - hgt / 160)) + ')';
+    ctx.beginPath(); ctx.ellipse(cx, surf - 1, (BOT_W / 2) * Math.max(0.5, 1 - hgt / 300), 5, 0, 0, 7); ctx.fill();
+
+    ctx.translate(cx, by - BOT_H / 2 - 6);
+    ctx.rotate(bot.rot);
+    ctx.scale(1 + sq * 0.18, 1 - sq * 0.25);
+
+    const w = BOT_W, h = BOT_H;
+    // wheels
+    [-w * 0.28, w * 0.28].forEach(wx => {
+      ctx.fillStyle = '#2a1450';
+      ctx.beginPath(); ctx.arc(wx, h / 2, 8, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let s = 0; s < 3; s++) {
+        const a = bot.wheel + s * 2.094;
+        ctx.moveTo(wx, h / 2); ctx.lineTo(wx + Math.cos(a) * 6, h / 2 + Math.sin(a) * 6);
+      }
+      ctx.stroke();
+    });
+    // body
+    ctx.fillStyle = '#2a1450'; roundRect(-w / 2 - 3, -h / 2 - 3, w + 6, h + 6, 13); ctx.fill();
+    ctx.fillStyle = '#ff3d8b'; roundRect(-w / 2, -h / 2, w, h, 10); ctx.fill();
+    ctx.fillStyle = '#ff7db1'; roundRect(-w / 2 + 4, -h / 2 + 3, w - 8, 6, 3); ctx.fill();
+    // front bumper
+    ctx.fillStyle = '#2ee6d6'; roundRect(w / 2 - 7, -h / 2 + 2, 6, h - 4, 3); ctx.fill();
+    // lidar turret
+    ctx.fillStyle = '#2a1450'; roundRect(-12, -h / 2 - 10, 24, 10, 4); ctx.fill();
+    ctx.fillStyle = (Math.floor(performance.now() / 200) % 2) ? '#2ee6d6' : '#ffd23f';
+    ctx.beginPath(); ctx.arc(0, -h / 2 - 5, 3, 0, 7); ctx.fill();
+    // NOW label
+    ctx.fillStyle = '#fff'; ctx.font = '9px Bungee, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('NOW', -10, 2);
+    // googly eye near the front
+    const ex = w / 2 - 18, ey = -1;
+    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#2a1450'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(ex, ey, 9, 0, 7); ctx.fill(); ctx.stroke();
+    const lag = bot.eyeLag;
+    ctx.fillStyle = '#2a1450';
+    ctx.beginPath(); ctx.arc(ex + 4 * lag + 1, ey + (phase === 'fly' ? -3 : 1) , 4.2, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawParts() {
+    parts.forEach(p => {
+      const k = p.t / p.life;
+      if (p.kind === 'line') {
+        ctx.strokeStyle = 'rgba(42,20,80,' + (0.5 * (1 - k)) + ')';
+        ctx.lineWidth = 4; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.len, p.y); ctx.stroke();
+      } else if (p.kind === 'puff') {
+        ctx.fillStyle = 'rgba(255,255,255,' + (0.9 * (1 - k)) + ')';
+        ctx.strokeStyle = 'rgba(42,20,80,' + (0.5 * (1 - k)) + ')'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1 + k), 0, 7); ctx.fill(); ctx.stroke();
+      } else if (p.kind === 'confetti') {
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.t * p.spin);
+        ctx.globalAlpha = Math.min(1, (p.life - p.t) * 2);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+        ctx.restore(); ctx.globalAlpha = 1;
+      }
+    });
+  }
+
+  function drawWords() {
+    words.forEach(w => {
+      const k = w.t / w.life;
+      const s = w.t < 0.15 ? easeOutBack(w.t / 0.15) : 1;
+      ctx.save();
+      ctx.translate(w.x, w.y);
+      ctx.rotate(w.rot);
+      ctx.scale(s, s);
+      ctx.globalAlpha = k > 0.7 ? (1 - k) / 0.3 : 1;
+      ctx.font = w.size + 'px Bungee, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.lineJoin = 'round'; ctx.lineWidth = 7; ctx.strokeStyle = '#2a1450';
+      ctx.strokeText(w.text, 0, 0);
+      ctx.fillStyle = w.color; ctx.fillText(w.text, 0, 0);
+      ctx.restore();
+    });
+  }
+
+  function drawHUD() {
+    ctx.save();
+    ctx.font = '16px Bungee, sans-serif';
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    const txt = 'STAIRS CLIMBED: ' + hopsDone + ' / ' + STEPS;
+    ctx.fillStyle = '#2a1450'; roundRect(14, 14, ctx.measureText(txt).width + 24, 34, 10); ctx.fill();
+    ctx.fillStyle = '#ffd23f'; ctx.fillText(txt, 26, 22);
+    ctx.restore();
+  }
+
+  function render() {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    drawBackground();
+    ctx.save();
+    ctx.translate(VW / 2, VH / 2 + 40);
+    ctx.scale(zoom, zoom);
+    ctx.translate(-cam.x, -cam.y);
+    drawWorldDecor();
+    drawStairs();
+    drawCrumbs();
+    drawParts();
+    drawBot();
+    drawWords();
+    ctx.restore();
+    drawHUD();
+    if (fade < 1) {
+      ctx.fillStyle = 'rgba(255,246,214,' + (1 - fade) + ')';
+      ctx.fillRect(0, 0, VW, VH);
+    }
+  }
+
+  // ---------- sizing ----------
+  let scale = 1, zoom = 1;
+  function resize() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const cssW = cv.clientWidth || VW;
+    scale = (cssW * dpr) / VW;
+    zoom = cssW < 600 ? 1.5 : 1;   // get closer to the action on phones
+    cv.width = Math.round(VW * scale);
+    cv.height = Math.round(VH * scale);
+  }
+  window.addEventListener('resize', () => { resize(); render(); });
+
+  // ---------- loop ----------
+  reset();
+  setPhase('rev');
+  resize();
+  render();
+  let last = performance.now();
+  let visible = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cv);
+  }
+  function frame(now) {
+    let dt = (now - last) / 1000; last = now;
+    if (dt > 0.05) dt = 0.05;     // avoid big jumps after tab switches
+    if (visible) { update(dt); render(); }
+    requestAnimationFrame(frame);
+  }
+  // expose a tiny hook for automated testing
+  window.__leemaStairs = { step: (dt) => { update(dt); render(); }, get state() { return { phase, step: bot.step, x: bot.x, y: bot.y, hops: hopsDone }; } };
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

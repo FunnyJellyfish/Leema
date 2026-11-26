@@ -1,11 +1,10 @@
 # Leema
 
-Website for **Leema** and the **Leema Now Robot Vacuum**: the robot vacuum that cleans your house *now*.
+Website for **Leema**, the robot company, and its first robot: the **Leema Now Robot Vacuum**.
 
-It climbs stairs with Zoom-Stop-Fly™: it goes really fast, stops, and flies up onto the next step.
-
-## Files
-- `index.html`: the whole site (page, styles, and the stairs animation in one file)
+## Pages
+- `index.html`: the Leema main page (company home, robots list, about)
+- `now.html`: the Now Robot Vacuum page, with the Zoom-Stop-Fly™ stairs animation
 - `CNAME`: the custom domain `leema.oddly-inc.com` for GitHub Pages
 
 ## Going live at leema.oddly-inc.com
